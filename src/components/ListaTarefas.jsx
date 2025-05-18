@@ -51,6 +51,10 @@ export default function ListaTarefas() {
     )
   }
 
+  // Separe as tarefas
+  const tarefasNaoConcluidas = tarefas.filter(t => !t.dataConclusao)
+  const tarefasConcluidas = tarefas.filter(t => t.dataConclusao)
+
   return (
     <div className="lista-tarefas-container">
       <div className="lista-tarefas-header">
@@ -74,7 +78,8 @@ export default function ListaTarefas() {
         </div>
       )}
 
-      {tarefas.map(tarefa => (
+      {/* Tarefas não concluídas */}
+      {tarefasNaoConcluidas.map(tarefa => (
         <div
           key={tarefa.id}
           className={`tarefa-card prioridade-${tarefa.prioridade} ${tarefa.dataConclusao ? 'tarefa-concluida' : ''}`}
@@ -128,6 +133,42 @@ export default function ListaTarefas() {
           </div>
         </div>
       ))}
+
+      {/* Tarefas concluídas */}
+      {tarefasConcluidas.length > 0 && (
+        <>
+          <h2 style={{ marginTop: '2em', color: '#43a047', fontSize: '1.2em' }}>Tarefas concluídas</h2>
+          {tarefasConcluidas.map(tarefa => (
+            <div
+              key={tarefa.id}
+              className={`tarefa-card prioridade-${tarefa.prioridade} tarefa-concluida`}
+              title="Clique para ver detalhes"
+            >
+              <div className="tarefa-titulo">{tarefa.titulo}</div>
+              <div className="tarefa-descricao">{tarefa.descricao}</div>
+              <div className="tarefa-info">
+                Criada em: {new Date(tarefa.dataCriacao).toLocaleDateString()}<br />
+                Prioridade: {tarefa.prioridade}
+              </div>
+              <div className="tarefa-acoes">
+                <span>✅ Concluída</span>
+                <button
+                  style={{ background: '#e53935' }}
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    if (window.confirm('Tem certeza que deseja excluir esta tarefa?')) {
+                      await fetch(`http://localhost:3444/tarefas/${tarefa.id}`, { method: 'DELETE' })
+                      setTarefas(tarefas => tarefas.filter(t => t.id !== tarefa.id))
+                    }
+                  }}
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   )
 }

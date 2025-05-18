@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/ListaTarefas.css'
 import FormTarefa from './FormTarefa'
+import EditarTarefa from './EditarTarefa'
 
 async function buscarTarefas() {
   const resp = await fetch('http://localhost:3444/tarefas')
@@ -11,6 +12,7 @@ export default function ListaTarefas() {
   const [tarefas, setTarefas] = useState([])
   const [carregando, setCarregando] = useState(true)
   const [criando, setCriando] = useState(false)
+  const [editando, setEditando] = useState(null)
 
   function atualizarTarefas() {
     setCarregando(true)
@@ -31,6 +33,19 @@ export default function ListaTarefas() {
           setCriando(false)
           atualizarTarefas()
         }}
+      />
+    )
+  }
+
+  if (editando) {
+    return (
+      <EditarTarefa
+        tarefa={editando}
+        onTarefaEditada={() => {
+          setEditando(null)
+          atualizarTarefas()
+        }}
+        onCancelar={() => setEditando(null)}
       />
     )
   }
@@ -72,19 +87,29 @@ export default function ListaTarefas() {
           </div>
           <div className="tarefa-acoes">
             {!tarefa.dataConclusao && (
-              <button
-                onClick={async (e) => {
-                  e.stopPropagation()
-                  await fetch(`http://localhost:3444/tarefas/${tarefa.id}/concluir`, { method: 'PATCH' })
-                  setTarefas(tarefas =>
-                    tarefas.map(t =>
-                      t.id === tarefa.id ? { ...t, dataConclusao: new Date().toISOString() } : t
+              <>
+                <button
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    await fetch(`http://localhost:3444/tarefas/${tarefa.id}/concluir`, { method: 'PATCH' })
+                    setTarefas(tarefas =>
+                      tarefas.map(t =>
+                        t.id === tarefa.id ? { ...t, dataConclusao: new Date().toISOString() } : t
+                      )
                     )
-                  )
-                }}
-              >
-                Concluir
-              </button>
+                  }}
+                >
+                  Concluir
+                </button>
+                <button
+                  onClick={e => {
+                    e.stopPropagation()
+                    setEditando(tarefa)
+                  }}
+                >
+                  Editar
+                </button>
+              </>
             )}
             {tarefa.dataConclusao && <span>✅ Concluída</span>}
           </div>

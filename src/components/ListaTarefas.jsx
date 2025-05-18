@@ -13,6 +13,9 @@ export default function ListaTarefas() {
   const [carregando, setCarregando] = useState(true)
   const [criando, setCriando] = useState(false)
   const [editando, setEditando] = useState(null)
+  const [filtroPrioridade, setFiltroPrioridade] = useState('')
+  const [filtroConcluida, setFiltroConcluida] = useState('')
+  const [mostrarFiltros, setMostrarFiltros] = useState(false)
 
   function atualizarTarefas() {
     setCarregando(true)
@@ -51,9 +54,17 @@ export default function ListaTarefas() {
     )
   }
 
+  // Filtra as tarefas com base nos filtros selecionados
+  const tarefasFiltradas = tarefas.filter(t => {
+    if (filtroPrioridade && t.prioridade !== filtroPrioridade) return false
+    if (filtroConcluida === 'sim' && !t.dataConclusao) return false
+    if (filtroConcluida === 'nao' && t.dataConclusao) return false
+    return true
+  })
+
   // Separe as tarefas
-  const tarefasNaoConcluidas = tarefas.filter(t => !t.dataConclusao)
-  const tarefasConcluidas = tarefas.filter(t => t.dataConclusao)
+  const tarefasNaoConcluidas = tarefasFiltradas.filter(t => !t.dataConclusao)
+  const tarefasConcluidas = tarefasFiltradas.filter(t => t.dataConclusao)
 
   return (
     <div className="lista-tarefas-container">
@@ -63,7 +74,7 @@ export default function ListaTarefas() {
           <button onClick={() => setCriando(true)}>
             Nova tarefa
           </button>
-          <button onClick={() => alert('Abrir modal de filtros (implementar depois)')}>
+          <button onClick={() => setMostrarFiltros(true)}>
             Filtrar tarefas
           </button>
         </div>
@@ -78,8 +89,38 @@ export default function ListaTarefas() {
         </div>
       )}
 
+      {/* Filtros */}
+      {mostrarFiltros && (
+        <div className="modal-filtro">
+          <h3>Filtrar tarefas</h3>
+          <label>
+            Prioridade:
+            <select value={filtroPrioridade} onChange={e => setFiltroPrioridade(e.target.value)}>
+              <option value="">Todas</option>
+              <option value="baixa">Baixa</option>
+              <option value="media">Média</option>
+              <option value="alta">Alta</option>
+            </select>
+          </label>
+          <label>
+            Status:
+            <select value={filtroConcluida} onChange={e => setFiltroConcluida(e.target.value)}>
+              <option value="">Todas</option>
+              <option value="nao">Não concluídas</option>
+              <option value="sim">Concluídas</option>
+            </select>
+          </label>
+          <button onClick={() => setMostrarFiltros(false)}>Fechar</button>
+        </div>
+      )}
+
       {/* Tarefas não concluídas */}
-      {tarefasNaoConcluidas.map(tarefa => (
+      {tarefasNaoConcluidas
+        .filter(t => {
+          return (filtroPrioridade === '' || t.prioridade === filtroPrioridade) &&
+            (filtroConcluida === '' || (filtroConcluida === 'sim' ? t.dataConclusao : !t.dataConclusao))
+        })
+        .map(tarefa => (
         <div
           key={tarefa.id}
           className={`tarefa-card prioridade-${tarefa.prioridade} ${tarefa.dataConclusao ? 'tarefa-concluida' : ''}`}

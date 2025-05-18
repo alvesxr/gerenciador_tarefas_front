@@ -75,3 +75,19 @@
   display: flex;
   gap: 1em;
 }
+
+.modal-filtro {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+  padding: 2em;
+  z-index: 1000;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}

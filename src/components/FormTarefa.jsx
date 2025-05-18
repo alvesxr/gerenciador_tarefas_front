@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import '../styles/FormTarefa.css'
 
-export default function FormTarefa({ onTarefaCriada }) {
+export default function FormTarefa({ onTarefaCriada, onCancelar }) {
   const [titulo, setTitulo] = useState('')
   const [descricao, setDescricao] = useState('')
   const [prioridade, setPrioridade] = useState('baixa')
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
-  const [sucesso, setSucesso] = useState(false)
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -32,22 +31,12 @@ export default function FormTarefa({ onTarefaCriada }) {
       setTitulo('')
       setDescricao('')
       setPrioridade('baixa')
-      setSucesso(true)
-      // Não chama onTarefaCriada aqui, só depois do clique no botão
+      if (onTarefaCriada) onTarefaCriada()
     } catch {
       setErro('Erro ao criar tarefa')
     } finally {
       setCarregando(false)
     }
-  }
-
-  if (sucesso) {
-    return (
-      <div className="form-tarefa">
-        <h2>Tarefa criada com sucesso!</h2>
-        <button onClick={onTarefaCriada}>Voltar para a lista</button>
-      </div>
-    )
   }
 
   return (
@@ -83,9 +72,14 @@ export default function FormTarefa({ onTarefaCriada }) {
           <option value="alta">Alta</option>
         </select>
       </label>
-      <button type="submit" disabled={carregando}>
-        {carregando ? 'Salvando...' : 'Salvar'}
-      </button>
+      <div style={{ display: 'flex', gap: '1em', marginTop: '1em' }}>
+        <button type="submit" disabled={carregando}>
+          {carregando ? 'Salvando...' : 'Salvar'}
+        </button>
+        <button type="button" onClick={onCancelar}>
+          Cancelar
+        </button>
+      </div>
     </form>
   )
 }

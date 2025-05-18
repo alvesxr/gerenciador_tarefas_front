@@ -33,6 +33,7 @@ export default function ListaTarefas() {
           setCriando(false)
           atualizarTarefas()
         }}
+        onCancelar={() => setCriando(false)}
       />
     )
   }

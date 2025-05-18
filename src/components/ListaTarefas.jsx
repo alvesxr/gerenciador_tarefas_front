@@ -110,6 +110,18 @@ export default function ListaTarefas() {
                 >
                   Editar
                 </button>
+                <button
+                  style={{ background: '#e53935' }}
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    if (window.confirm('Tem certeza que deseja excluir esta tarefa?')) {
+                      await fetch(`http://localhost:3444/tarefas/${tarefa.id}`, { method: 'DELETE' })
+                      setTarefas(tarefas => tarefas.filter(t => t.id !== tarefa.id))
+                    }
+                  }}
+                >
+                  Excluir
+                </button>
               </>
             )}
             {tarefa.dataConclusao && <span>✅ Concluída</span>}

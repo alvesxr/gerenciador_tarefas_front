@@ -29,12 +29,13 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   background: var(--bg-color);
   color: var(--text-color);
+  display: flex;
+  justify-content: center;   /* centraliza horizontalmente */
+  align-items: flex-start;   /* alinha no topo, mas centralizado */
 }
 
 h1 {

@@ -1,0 +1,77 @@
+.lista-tarefas-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.tarefa-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  border-top: 6px solid #ccc; /* cor padrão, será sobrescrita pelas classes de prioridade */
+}
+
+.tarefa-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+.tarefa-card.prioridade-baixa {
+  border-top-color: #43a047; /* verde */
+}
+.tarefa-card.prioridade-media {
+  border-top-color: #fbc02d; /* amarela */
+}
+.tarefa-card.prioridade-alta {
+  border-top-color: #e53935; /* vermelha */
+}
+
+.tarefa-titulo {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.tarefa-descricao {
+  color: #555;
+  margin-bottom: 1em;
+}
+
+.tarefa-info {
+  font-size: 0.95em;
+  color: #888;
+  margin-bottom: 0.5em;
+}
+
+.tarefa-acoes {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 1em;
+}
+
+.tarefa-concluida {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.lista-tarefas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2em;
+  gap: 2em;
+}
+
+.lista-tarefas-header h1 {
+  margin: 0;
+  font-size: 2.2em;
+}
+
+.lista-tarefas-actions {
+  display: flex;
+  gap: 1em;
+}

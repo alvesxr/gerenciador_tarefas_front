@@ -1,0 +1,45 @@
+.form-tarefa {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.form-tarefa h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.form-tarefa label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  gap: 0.3em;
+}
+
+.form-tarefa input,
+.form-tarefa textarea,
+.form-tarefa select {
+  padding: 0.5em;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+
+.form-tarefa button {
+  margin-top: 1em;
+}
+
+.form-erro {
+  color: #e53935;
+  background: #ffeaea;
+  border-radius: 6px;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  text-align: center;
+}
